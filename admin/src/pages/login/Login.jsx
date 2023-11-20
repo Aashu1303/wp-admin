@@ -2,12 +2,7 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-//import { AuthContext } from "../context/AuthContext";
 import "./login.scss";
-
-const api = axios.create({
-  baseURL: "https://wp-admin-api.vercel.app", // Replace with the actual URL
-});
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -16,26 +11,20 @@ const Login = () => {
   });
 
   const { loading, error, dispatch } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
-  const adminCredentials = {
-    username: "DEVX",
-    password: "DEVX",
-  };
-
-  //   Handle Change Function
+  // Handle Change Function
   const handleChange = (e) => {
     setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  //   Handle Click Function
-  
-  const handleClick = async (e) => {
+  // Handle Click Function for Login
+  const handleLoginClick = async (e) => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
-
     try {
-      const res = await api.post("/auth/login", credentials); // Use the axios instance
+      const res = await axios.post("/auth/login", credentials);
       if (res.data.isAdmin) {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
         navigate("/");
@@ -47,43 +36,42 @@ const Login = () => {
     }
   };
 
+  // Handle Click Function for Registration
+  const handleRegisterClick = async (e) => {
+    e.preventDefault();
+    // Add logic to send a registration request to the external API
+    try {
+      const res = await axios.post("https://wp-admin-api.vercel.app/register", credentials);
+      // Handle the registration response as needed
+    } catch (error) {
+      // Handle registration failure
+    }
+  };
+
   return (
     <div className="mainContainer">
       <div className="contentArea">
         <div className="right">
           <h1>Sign in your account!</h1>
-          <p>Login with your personal details for continue</p>
+          <p>Login with your personal details to continue</p>
           <form>
             <input
-              style={{
-                width: "100%",
-                padding: "15px",
-                border: "none",
-                outline: "none",
-                backgroundColor: "#ddd",
-                borderRadius: "5px",
-              }}
               type="text"
               placeholder="Username"
               id="username"
               onChange={handleChange}
             />
             <input
-              style={{
-                width: "100%",
-                padding: "15px",
-                border: "none",
-                outline: "none",
-                backgroundColor: "#ddd",
-                borderRadius: "5px",
-              }}
               type="password"
               placeholder="Password"
               id="password"
               onChange={handleChange}
             />
-            <button disabled={loading} onClick={handleClick}>
+            <button disabled={loading} onClick={handleLoginClick}>
               Login
+            </button>
+            <button disabled={loading} onClick={handleRegisterClick}>
+              Register
             </button>
             {error && <span>{error.message}</span>}
           </form>
@@ -91,7 +79,6 @@ const Login = () => {
         <div className="left">
           <h1>Welcome Back!</h1>
           <p>to continue please login with your personal account information</p>
-          
         </div>
       </div>
     </div>
