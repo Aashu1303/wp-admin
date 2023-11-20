@@ -11,19 +11,12 @@ import cookieParser from "cookie-parser"
 import cors from "cors"
 
 const app = express()
-app.use(cors(
-    {
-        origin : ["https://wp-admin-frontend-two.vercel.app"],
-        methods: ["POST" , "GET"],
-        credentials: true
-    }
-));
 
 dotenv.config()
 
 const connect = async () => {
     try {
-        await mongoose.connect(process.env.MONGO);
+        await mongoose.connect('mongodb+srv://aashutoshag03:EeNywFp4tAHaWC6s@cluster0.ubxkjer.mongodb.net/test?retryWrites=true&w=majority');
         console.log("connected to mongoDb.")
     }
     catch (error) {
@@ -36,6 +29,7 @@ mongoose.connection.on("disconnected", () => {
     console.log("mongo disconnected")
 })
 
+app.use(cors());
 app.use(cookieParser())
 app.use(express.json())
 
