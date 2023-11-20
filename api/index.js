@@ -11,7 +11,11 @@ import cookieParser from "cookie-parser"
 import cors from "cors"
 
 const app = express()
-
+app.use(cors({
+    origin: "https://wp-admin-frontend-two.vercel.app/login",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // Enable credentials (cookies, authorization headers, etc.)
+}));
 dotenv.config()
 
 const connect = async () => {
@@ -29,7 +33,6 @@ mongoose.connection.on("disconnected", () => {
     console.log("mongo disconnected")
 })
 
-app.use(cors());
 app.use(cookieParser())
 app.use(express.json())
 
