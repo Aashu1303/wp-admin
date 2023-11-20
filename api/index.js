@@ -11,6 +11,14 @@ import cookieParser from "cookie-parser"
 import cors from "cors"
 
 const app = express()
+app.use(cors(
+    {
+        origin : [https://wp-admin-api.verce.app"],
+        methods: ["POST" , "GET"],
+        credentials: true
+    }
+));
+
 dotenv.config()
 
 const connect = async () => {
