@@ -13,7 +13,7 @@ import cors from "cors"
 const app = express()
 app.use(cors(
     {
-        origin : [https://wp-admin-api.verce.app"],
+        origin : [https://wp-admin-frontend-two.vercel.app/login"],
         methods: ["POST" , "GET"],
         credentials: true
     }
