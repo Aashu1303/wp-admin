@@ -5,6 +5,10 @@ import { AuthContext } from "../../context/AuthContext";
 //import { AuthContext } from "../context/AuthContext";
 import "./login.scss";
 
+const api = axios.create({
+  baseURL: "https://wp-admin-api.vercel.app", // Replace with the actual URL
+});
+
 const Login = () => {
   const [credentials, setCredentials] = useState({
     username: undefined,
@@ -12,7 +16,6 @@ const Login = () => {
   });
 
   const { loading, error, dispatch } = useContext(AuthContext);
-
   const navigate = useNavigate();
 
   const adminCredentials = {
@@ -26,25 +29,24 @@ const Login = () => {
   };
 
   //   Handle Click Function
+  
   const handleClick = async (e) => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
+
     try {
-      const res = await axios.post(
-        "/auth/login",
-        credentials
-      );
-      if(res.data.isAdmin){
+      const res = await api.post("/auth/login", credentials); // Use the axios instance
+      if (res.data.isAdmin) {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
         navigate("/");
-      }else{
-        dispatch({ type: "LOGIN_FAILURE", payload: {message:"You are not admin"} });
+      } else {
+        dispatch({ type: "LOGIN_FAILURE", payload: { message: "You are not admin" } });
       }
-      
     } catch (error) {
       dispatch({ type: "LOGIN_FAILURE", payload: error.response.data });
     }
   };
+
   return (
     <div className="mainContainer">
       <div className="contentArea">
