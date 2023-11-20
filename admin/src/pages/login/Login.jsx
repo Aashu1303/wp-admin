@@ -41,7 +41,7 @@ const Login = () => {
     e.preventDefault();
     // Add logic to send a registration request to the external API
     try {
-      const res = await axios.post("https://wp-admin-api.vercel.app/auth/login", credentials);
+      const res = await axios.post("https://wp-admin-api.vercel.app", credentials);
       // Handle the registration response as needed
     } catch (error) {
       // Handle registration failure
